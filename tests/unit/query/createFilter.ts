@@ -1,7 +1,7 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
-import Filter, { createFilter, FilterType, BooleanOp, SimpleFilter } from '../../../src/query/Filter';
-import { createPointer } from '../../../src/patch/JsonPointer';
+import createFilter, {  Filter, FilterType, BooleanOp, SimpleFilter } from '../../../src/query/createFilter';
+import createPointer from '../../../src/patch/createJsonPointer';
 
 type SimpleObj = { key: number; id: string };
 type NestedObj = { key: { key2: number }; id: string};

@@ -1,7 +1,7 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
-import { createSort } from '../../../src/query/Sort';
-import { createPointer } from '../../../src/patch/JsonPointer';
+import createSort from '../../../src/query/createSort';
+import createPointer from '../../../src/patch/createJsonPointer';
 
 type SimpleObj = { key1: string; id: number };
 type NestedObj = { key1: { key2: string }; id: number};

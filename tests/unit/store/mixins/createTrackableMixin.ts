@@ -1,12 +1,11 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import Promise from 'dojo-shim/Promise';
-import { StoreOptions, CrudOptions } from '../../../../src/store/createStore';
-import { UpdateResults } from '../../../../src/storage/createInMemoryStorage';
 import createTrackableMixin, {
 	TrackableOptions, TrackableMixin,
 	TrackedObservableStoreMixin
 } from '../../../../src/store/mixins/createTrackableMixin';
+import { StoreOptions, CrudOptions, UpdateResults } from '../../../../src/store/createStore';
 import createQueryMixin, { QueryMixin, QueryOptions } from '../../../../src/store/mixins/createQueryMixin';
 import { ComposeFactory } from 'dojo-compose/compose';
 import createSubcollectionStore from '../../../../src/store/createSubcollectionStore';

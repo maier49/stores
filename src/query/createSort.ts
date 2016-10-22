@@ -1,12 +1,12 @@
-import { Query, QueryType } from './createQuery';
-import JsonPointer, { navigate, createPointer } from '../patch/JsonPointer';
+import { Query, QueryType } from './interfaces';
+import createPointer, { JsonPointer, navigate } from '../patch/createJsonPointer';
 
 export interface Sort<T> extends Query<T, T> {
 	readonly comparatorOrProperty: ((a: T, b: T) => number) | string | JsonPointer;
 	readonly descending?: boolean;
 }
 
-export function createSort<T>(
+function createSort<T>(
 	comparatorOrProperty: ((a: T, b: T) => number) | string | JsonPointer,
 	descending?: boolean,
 	serializer?: (sort: Sort<T>) => string): Sort<T> {
@@ -82,3 +82,5 @@ function sortValue(a: any, b: any) {
 	}
 	return comparison;
 }
+
+export default createSort;

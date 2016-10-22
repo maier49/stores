@@ -1,5 +1,5 @@
 import { isEqual } from '../utils';
-import JsonPointer, { createPointer } from './JsonPointer';
+import createPointer, { JsonPointer } from './createJsonPointer';
 export const enum OperationType {
 	Add,
 	Remove,
@@ -9,14 +9,12 @@ export const enum OperationType {
 	Test
 }
 
-interface Operation {
+export interface Operation {
 	op: string;
 	path: JsonPointer;
 	toString(): string;
 	apply(target: any): any;
 }
-
-export default Operation;
 
 export interface Add extends Operation {
 	value: any;
@@ -142,7 +140,7 @@ function toString(this: Operation & { value?: any, from?: any } ) {
 
 	return JSON.stringify(jsonObj);
 }
-export function createOperation(type: OperationType, path: JsonPointer | string[], value?: any, from?: JsonPointer | string[], oldValue?: any): Operation {
+function createOperation(type: OperationType, path: JsonPointer | string[], value?: any, from?: JsonPointer | string[], oldValue?: any): Operation {
 	switch (type) {
 		case OperationType.Add:
 			return <Add> {
@@ -200,3 +198,4 @@ export function createOperation(type: OperationType, path: JsonPointer | string[
 			};
 	}
 }
+export default createOperation;

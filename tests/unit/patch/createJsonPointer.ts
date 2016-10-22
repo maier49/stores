@@ -1,6 +1,6 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
-import { createPointer, navigate } from '../../../src/patch/JsonPointer';
+import createPointer, { navigate } from '../../../src/patch/createJsonPointer';
 
 registerSuite({
 	name: 'JsonPointer',
