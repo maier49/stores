@@ -1,5 +1,5 @@
 import { Query, QueryType } from './interfaces';
-import createPointer, { JsonPointer, navigate } from '../patch/createJsonPointer';
+import createJsonPointer, { JsonPointer, navigate } from '../patch/createJsonPointer';
 
 export interface Sort<T> extends Query<T, T> {
 	readonly comparatorOrProperty: ((a: T, b: T) => number) | string | JsonPointer;
@@ -20,7 +20,7 @@ function createSort<T>(
 	else {
 		let pointer: JsonPointer;
 		if (typeof comparatorOrProperty === 'string') {
-			pointer = createPointer(comparatorOrProperty);
+			pointer = createJsonPointer(comparatorOrProperty);
 		}
 		else {
 			pointer = <JsonPointer> comparatorOrProperty;

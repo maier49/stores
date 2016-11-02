@@ -25,7 +25,7 @@ function toString(...segments: string[]): string {
 	});
 }
 
-function createPointer(...segments: string[]): JsonPointer {
+function createJsonPointer(...segments: string[]): JsonPointer {
 	return {
 		segments: function() {
 			return segments.map(segment => decode(segment));
@@ -33,10 +33,10 @@ function createPointer(...segments: string[]): JsonPointer {
 			return toString(...segments);
 		},
 		push: function(segment: string) {
-			return createPointer(...segments.concat(segment));
+			return createJsonPointer(...segments.concat(segment));
 		},
-		pop: function() { return createPointer(...segments.slice(0, segments.length - 1));
+		pop: function() { return createJsonPointer(...segments.slice(0, segments.length - 1));
 		}
 	};
 }
-export default createPointer;
+export default createJsonPointer;

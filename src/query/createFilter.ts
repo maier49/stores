@@ -1,4 +1,4 @@
-import createPointer, { JsonPointer, navigate } from '../patch/createJsonPointer';
+import createJsonPointer, { JsonPointer, navigate } from '../patch/createJsonPointer';
 import { isEqual } from '../utils';
 import { Query, QueryType } from './interfaces';
 
@@ -193,7 +193,7 @@ function applyFilterChain<T>(item: T, filterChain: FilterChainMember<T>[]): bool
 }
 
 function createComparator<T>(operator: FilterType, value: any, path?: ObjectPointer): SimpleFilter<T> {
-	path = typeof path === 'string' ? createPointer(path) : path;
+	path = typeof path === 'string' ? createJsonPointer(path) : path;
 	let test: (property: any) => boolean;
 	let filterType: FilterType;
 	let operatorString: string;

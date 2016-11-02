@@ -7,7 +7,7 @@ import Set from 'dojo-shim/Set';
 import Promise from 'dojo-shim/Promise';
 import createRange from '../../../src/query/createStoreRange';
 import createFilter from '../../../src/query/createFilter';
-import createPointer from '../../../src/patch/createJsonPointer';
+import createJsonPointer from '../../../src/patch/createJsonPointer';
 import createPatch, { Patch } from '../../../src/patch/createPatch';
 import createSort from '../../../src/query/createSort';
 import createOperation, { OperationType } from '../../../src/patch/createOperation';
@@ -230,10 +230,10 @@ registerSuite({
 				createCompoundQuery({
 					query:
 						createFilter()
-							.deepEqualTo(createPointer('nestedProperty', 'value'), 2)
+							.deepEqualTo(createJsonPointer('nestedProperty', 'value'), 2)
 							.or()
-							.deepEqualTo(createPointer('nestedProperty', 'value'), 3)
-				}).withQuery(createSort(createPointer('nestedProperty', 'value')))
+							.deepEqualTo(createJsonPointer('nestedProperty', 'value'), 3)
+				}).withQuery(createSort(createJsonPointer('nestedProperty', 'value')))
 			)
 				.then(dfd.callback(function(fetchedData: ItemType[]) {
 					assert.deepEqual(fetchedData, [ data[1], data[0] ], 'Data fetched with queries was incorrect');
