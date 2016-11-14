@@ -21,7 +21,7 @@ interface TreeMixinState {
 	ignoreExpanded?: boolean;
 }
 
-const instanceStateMap = new WeakMap<TreeMixin<any, any, any>, TreeMixinState>();
+const instanceStateMap = new WeakMap<TreeMixin<any, any, any, any>, TreeMixinState>();
 
 type TreeStoreSubCollection<T, O extends CrudOptions, U extends UpdateResults<T>, C extends Store<T, O, U>> =
 	TreeMixin<T, O, U, C> & SubcollectionStore<T, O, U, C & TreeMixin<T, O, U, C>>;
@@ -32,41 +32,43 @@ function createTreeMixin<T, O extends CrudOptions, U extends UpdateResults<T>, C
 	TreeMixin<T, O, U, C>,
 	TreeMixinState
 > {
-	return {
-		mixin: {
-			tree(this: TreeStoreSubCollection<T, O, U, C>) {
-				const state = instanceStateMap.get(this);
-				state.newTree = true;
-				const newTree = this.createSubcollection();
-				state.newTree = false;
-				return newTree;
-			},
-			getChildren(this: TreeStoreSubCollection<T, O, U, C>, item: T) {
-				const state = instanceStateMap.get(this);
-				state.ignoreExpanded = true;
-				const fetchResults = this.fetch(createFilter<T>().equalTo('parent', this.identify(item)[0]));
-				state.ignoreExpanded = false;
-				return fetchResults;
-			},
-			getRootCollection(this: TreeStoreSubCollection<T, O, U, C>) {
-				return this.filter(createFilter<T>().equalTo('parent', null));
-			},
-			expand(this: TreeStoreSubCollection<T, O, U, C>, ids: string | string[]) {
-				const state = instanceStateMap.get(this);
-				state.expanded = [ ...state.expanded, ...(Array.isArray(ids) ? ids : ids) ];
-			},
-			collapse(this: TreeStoreSubCollection<T, O, U, C>, ids: string | string[]) {
-				const state = instanceStateMap.get(this);
-				const idArray: string[] = Array.isArray(ids) ? ids : [ ids ];
-				idArray.forEach((id) => {
-					const index = state.expanded.indexOf(id);
-					if (index > -1) {
-						state.expanded.splice(index, 1);
-					}
-				});
-			}
+	const treeMixin: any = {
+		tree(this: TreeStoreSubCollection<T, O, U, C>) {
+			const state = instanceStateMap.get(this);
+			state.newTree = true;
+			const newTree = this.createSubcollection();
+			state.newTree = false;
+			return newTree;
 		},
-		initialize(instance: TreeMixin<any, any, any>, options?: TreeMixinState) {
+		getChildren(this: TreeStoreSubCollection<T, O, U, C>, item: T) {
+			const state = instanceStateMap.get(this);
+			state.ignoreExpanded = true;
+			const fetchResults = this.fetch(createFilter<T>().equalTo('parent', this.identify(item)[0]));
+			state.ignoreExpanded = false;
+			return fetchResults;
+		},
+		getRootCollection(this: TreeStoreSubCollection<T, O, U, C>) {
+			return this.filter(createFilter<T>().equalTo('parent', null));
+		},
+		expand(this: TreeStoreSubCollection<T, O, U, C>, ids: string | string[]) {
+			const state = instanceStateMap.get(this);
+			state.expanded = [ ...state.expanded, ...(Array.isArray(ids) ? ids : [ ids ]) ];
+		},
+		collapse(this: TreeStoreSubCollection<T, O, U, C>, ids: string | string[]) {
+			const state = instanceStateMap.get(this);
+			const idArray: string[] = Array.isArray(ids) ? ids : [ ids ];
+			idArray.forEach((id) => {
+				const index = state.expanded.indexOf(id);
+				if (index > -1) {
+					state.expanded.splice(index, 1);
+				}
+			});
+		}
+	};
+
+	return {
+		mixin: treeMixin,
+		initialize(instance: TreeMixin<any, any, any, any>, options?: TreeMixinState) {
 			options = options || {
 				expanded: []
 			};
@@ -75,7 +77,7 @@ function createTreeMixin<T, O extends CrudOptions, U extends UpdateResults<T>, C
 		aspectAdvice: {
 			before: {
 				createSubcollection(this: TreeStoreSubCollection<T, O, U, C>, options?: TreeMixinState) {
-					options = options || {};
+					options = options || { expanded: [] };
 					const state = instanceStateMap.get(this);
 					if (!state.newTree) {
 						options.expanded = state.expanded;
