@@ -8,7 +8,6 @@ import { SubcollectionStore, SubcollectionOptions } from '../createSubcollection
 import WeakMap from 'dojo-shim/WeakMap';
 import { ComposeMixinDescriptor } from 'dojo-compose/compose';
 
-// export interface QueryMixin<T, O extends CrudOptions, U extends UpdateResults<T>, C extends SubcollectionStore<T, O, U, C>> extends SubcollectionStore<T, O, U, C> {
 export interface QueryMixin<T, O extends CrudOptions, U extends UpdateResults<T>, C extends Store<T, O, U>> {
 	query(query: Query<T, T>): C & this;
 	filter(filter: Filter<T>): C & this;
