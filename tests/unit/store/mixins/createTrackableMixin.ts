@@ -6,7 +6,6 @@ import createTrackableMixin, {
 	TrackableOptions, TrackableMixin,
 	TrackedObservableStoreMixin
 } from '../../../../src/store/mixins/createTrackableMixin';
-import { StoreOptions, CrudOptions, UpdateResults } from '../../../../src/store/createStore';
 import createQueryMixin, { QueryMixin, QueryOptions } from '../../../../src/store/mixins/createQueryMixin';
 import { ComposeFactory } from 'dojo-compose/compose';
 import createSubcollectionStore from '../../../../src/store/createSubcollectionStore';
